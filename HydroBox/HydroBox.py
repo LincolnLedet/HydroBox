@@ -2,6 +2,7 @@
 import datetime
 import time
 from RPi import GPIO
+import RPi.GPIO as GPIO
 from RPLCD.gpio import CharLCD
 GPIO.setwarnings(False)
 
@@ -17,24 +18,38 @@ lcd = CharLCD(pin_rs=LCD_RS, pin_rw=8, pin_e=LCD_E, pins_data=[LCD_D4, LCD_D5, L
              cols=16, rows=2, dotsize=8,
              charmap='A02',
              auto_linebreaks=True)
+#fan init
+fan = 19
+GPIO.setup(fan, GPIO.OUT)
+
 
 #main
 def main():
-    lcd.cursor_pos = (0, 3)
-    lcd.write_string('p')
-    time.sleep(1);
-    lcd.cursor_pos = (0, 6)
-    smiley = (
-    0b00000,
-    0b01010,
-    0b01010,
-    0b00000,
-    0b10001,
-    0b10001,
-    0b01110,
-    0b00000)
-    lcd.create_char(0, smiley)
-    lcd.write_string('\x03')
+    #boot up
+    lcd.clear()
+    time.sleep(1)
+    lcd.cursor_pos = (0, 0)
+    time.sleep(.1)
+    lcd.write_string('   Welcome to ')
+    lcd.cursor_pos = (1, 0)
+    lcd.write_string('    HydroBox!')
+    time.sleep(1)
+    GPIO.output(fan, GPIO.HIGH)
+    time.sleep(80)
+    GPIO.output(fan, GPIO.LOW)
+    time.sleep(.1)
+    GPIO.output(fan, GPIO.HIGH)
+    time.sleep(.1)
+    GPIO.output(fan, GPIO.LOW)
+    lcd.clear()
+    
+    #Temp
+    #Light Time
+    #Fans
+#def displayTemp()
 
+#def displayLightTimes()
+
+#def Fans()
     
 main()
